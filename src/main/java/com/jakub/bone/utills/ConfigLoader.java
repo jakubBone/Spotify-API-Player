@@ -1,3 +1,5 @@
+package com.jakub.bone.utills;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;

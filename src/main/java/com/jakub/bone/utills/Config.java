@@ -1,3 +1,5 @@
+package com.jakub.bone.utills;
+
 public class Config {
     // Client
     public static final String CLIENT_ID = ConfigLoader.get("client.ID");
