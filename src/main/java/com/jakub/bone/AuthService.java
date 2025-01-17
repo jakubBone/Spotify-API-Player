@@ -8,10 +8,9 @@ import java.util.Base64;
 
 public class AuthService {
     OkHttpClient client = new OkHttpClient();
-    String post() throws IOException {
+    public void post() throws IOException {
         String credentials = Config.CLIENT_ID + ":" + Config.CLIENT_SECRET;
         String encodedCredentials = Base64.getEncoder().encodeToString(credentials.getBytes());
-
 
         RequestBody body = new FormBody.Builder()
                 .add("grant_type","client_credentials")
@@ -21,12 +20,12 @@ public class AuthService {
                 .url(Config.TOKEN_URL)
                 .addHeader("Authorization", "Basic " + encodedCredentials)
                 .post(body)
-                .build()
-
+                .build();
 
         try (Response response = client.newCall(request).execute()) {
             String responseBody = response.body().string();
+            System.out.println("\n------------------------------------");
             System.out.println(responseBody);
-        }
+            System.out.println("------------------------------------");        }
     }
 }
