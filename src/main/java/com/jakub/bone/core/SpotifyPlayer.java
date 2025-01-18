@@ -1,7 +1,7 @@
 package com.jakub.bone.core;
 
 import com.jakub.bone.AuthService;
-import com.jakub.bone.SpotifySearchService;
+import com.jakub.bone.SearchService;
 
 import java.io.IOException;
 
@@ -10,8 +10,8 @@ public class SpotifyPlayer {
         AuthService service = new AuthService();
         String accessToken = service.getAccessToken().trim();
 
-        SpotifySearchService searchService = new SpotifySearchService();
-        String album = searchService.searchAlbum(accessToken, "Małomiasteczkowy");
+        SearchService searchService = new SearchService();
+        String album = searchService.searchAlbum(accessToken, "Męskie Granie");
         System.out.println(album);
     }
 }
