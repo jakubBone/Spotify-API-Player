@@ -9,7 +9,10 @@ import java.io.IOException;
 import java.util.Base64;
 
 public class AuthService {
-    OkHttpClient client = new OkHttpClient();
+    OkHttpClient client;
+    public AuthService(OkHttpClient client) {
+        this.client = client;
+    }
 
     public String getAccessToken() throws IOException {
         Request request = buildAccessTokenRequest();
