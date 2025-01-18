@@ -10,4 +10,10 @@ public class Config {
     public static final String REDIRECT_URL = ConfigLoader.get("url.redirect");
     public static final String TOKEN_URL = ConfigLoader.get("url.token");
 
+    // Endpoint
+    public static final String SEARCH_ENDPOINT = ConfigLoader.get("endpoint.search");
+
+
+
+
 }
