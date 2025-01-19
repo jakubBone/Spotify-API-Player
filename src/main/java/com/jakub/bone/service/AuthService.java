@@ -1,4 +1,4 @@
-package com.jakub.bone;
+package com.jakub.bone.service;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

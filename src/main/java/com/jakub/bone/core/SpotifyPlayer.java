@@ -1,8 +1,8 @@
 package com.jakub.bone.core;
 
-import com.jakub.bone.AuthService;
-import com.jakub.bone.SearchService;
-import com.jakub.bone.utills.PlayerService;
+import com.jakub.bone.service.AuthService;
+import com.jakub.bone.service.SearchService;
+import com.jakub.bone.service.PlayerService;
 import okhttp3.OkHttpClient;
 
 import java.io.IOException;
