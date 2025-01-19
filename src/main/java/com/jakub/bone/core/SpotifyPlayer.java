@@ -2,6 +2,7 @@ package com.jakub.bone.core;
 
 import com.jakub.bone.AuthService;
 import com.jakub.bone.SearchService;
+import com.jakub.bone.utills.PlayerService;
 import okhttp3.OkHttpClient;
 
 import java.io.IOException;
@@ -15,6 +16,9 @@ public class SpotifyPlayer {
 
         SearchService searchService = new SearchService(client);
         String album = searchService.searchAlbum(accessToken, "Męskie Granie");
-        System.out.println(album);
+
+        PlayerService player = new PlayerService(client);
+        player.playMusic(accessToken, album);
+
     }
 }

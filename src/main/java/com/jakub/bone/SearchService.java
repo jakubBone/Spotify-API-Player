@@ -15,9 +15,8 @@ public class SearchService {
         this.client = client;
     }
 
-    public String searchAlbum(String accessToken, String albumName) {
-        String url = "https://api.spotify.com/v1/search?q=" + URLEncoder.encode(albumName, StandardCharsets.UTF_8) + "&type=album&limit=1";
-        System.out.println("!!!! " + url + " !!!!");
+    public String searchAlbum(String accessToken, String album) {
+        String url = "https://api.spotify.com/v1/search?q=" + URLEncoder.encode(album, StandardCharsets.UTF_8) + "&type=album&limit=1";
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("Authorization", "Bearer " + accessToken)
@@ -36,4 +35,5 @@ public class SearchService {
             throw new RuntimeException(e);
         }
     }
+
 }
