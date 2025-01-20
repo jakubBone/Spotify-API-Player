@@ -1,24 +1,35 @@
 package com.jakub.bone.core;
 
 import com.jakub.bone.service.AuthService;
-import com.jakub.bone.service.SearchService;
-import com.jakub.bone.service.PlayerService;
 import okhttp3.OkHttpClient;
 
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 
 public class SpotifyPlayer {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, URISyntaxException {
         OkHttpClient client = new OkHttpClient();
-
         AuthService service = new AuthService(client);
-        String accessToken = service.getAccessToken().trim();
 
-        SearchService searchService = new SearchService(client);
-        String album = searchService.searchAlbum(accessToken, "Męskie Granie");
+        String authorizationUrl = service.getAuthorizationURL();
+        System.out.println(authorizationUrl);
 
-        PlayerService player = new PlayerService(client);
-        player.playMusic(accessToken, album);
+        if (Desktop.isDesktopSupported()) {
+            Desktop.getDesktop().browse(new URI(authorizationUrl));
+        } else {
+            System.out.println("Open the following URL in your browser: " + authorizationUrl);
+        }
+
+        try {
+            Thread.sleep(15000);
+        } catch (InterruptedException ex){
+            ex.printStackTrace();
+        }
+
 
     }
 }
+
