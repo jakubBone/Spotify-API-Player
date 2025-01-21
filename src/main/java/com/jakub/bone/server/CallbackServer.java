@@ -1,10 +1,13 @@
 package com.jakub.bone.server;
 
+import com.jakub.bone.utills.Config;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
+import okhttp3.Response;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URI;
 
@@ -22,11 +25,23 @@ public class CallbackServer {
         URI requestURI = exchange.getRequestURI();
         String query = requestURI.getQuery();
 
+        String response;
+        int statusCode;
+
         if (query != null && query.contains("code=")) {
             String code = extractParamValue(query, "code");
             if (code != null) {
                 this.authCode = code;
+                response = Config.RESPONSE_SUCCEED;
+                statusCode = 200;
+            } else {
+                response = Config.RESPONSE_FAILED;
+                statusCode = 400;
             }
+            exchange.sendResponseHeaders(statusCode, response.length());
+            OutputStream os = exchange.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
         }
     }
 
