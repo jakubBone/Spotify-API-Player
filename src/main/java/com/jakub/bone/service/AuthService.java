@@ -19,7 +19,7 @@ public class AuthService {
     public String getAuthorizationURL(){
         String scopes = "playlist-read-private user-modify-playback-state";
 
-        return "https://accounts.spotify.com/authorize" +
+        return Config.AUTH_URL +
                 "?response_type=code" +
                 "&client_id=" + Config.CLIENT_ID +
                 "&scope=" + URLEncoder.encode(scopes, StandardCharsets.UTF_8) +
@@ -32,7 +32,7 @@ public class AuthService {
         RequestBody body = new FormBody.Builder()
                 .add("grant_type", "authorization_code")
                 .add("code", authCode)
-                .add("redirect_url", Config.REDIRECT_URI)
+                .add("redirect_uri", Config.REDIRECT_URI)
                 .add("client_id", Config.CLIENT_ID)
                 .add("client_secret", Config.CLIENT_SECRET)
                 .build();
@@ -43,10 +43,10 @@ public class AuthService {
                 .post(body)
                 .build();
 
-        return getTokenResponse(request);
+        return parseAccessTokenFromResponse(request);
     }
 
-    public String getTokenResponse(Request request) throws IOException {
+    public String parseAccessTokenFromResponse(Request request) throws IOException {
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
                 String responseBody = response.body().string();
