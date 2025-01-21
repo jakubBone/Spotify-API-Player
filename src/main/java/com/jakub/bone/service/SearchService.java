@@ -24,19 +24,21 @@ public class SearchService {
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
-                String responseBody = response.body().string();
-                JsonObject jsonObject = JsonParser.parseString(responseBody).getAsJsonObject();
-                String albumId = jsonObject.getAsJsonObject("albums")
-                        .getAsJsonArray("items")
-                        .get(0)
-                        .getAsJsonObject()
-                        .get("id").getAsString();
-                return albumId;
+               return parseAlbumId(response.body().string());
+            } else {
+                throw new RuntimeException("Unsuccessful response: " + response.message());
             }
-            return null;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    private String parseAlbumId(String responseBody) {
+        JsonObject jsonObject = JsonParser.parseString(responseBody).getAsJsonObject();
+        return jsonObject.getAsJsonObject("albums")
+                .getAsJsonArray("items")
+                .get(0)
+                .getAsJsonObject()
+                .get("id").getAsString();
+    }
 }

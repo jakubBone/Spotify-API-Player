@@ -53,9 +53,7 @@ public class AuthService {
                 JsonObject jsonObject = JsonParser.parseString(responseBody).getAsJsonObject();
                 return jsonObject.get("access_token").getAsString();
             }
-            System.err.println("Error: " + response.code() + " - " + response.message());
-            System.err.println("Response body: " + response.body().string());
+            throw new RuntimeException("Unsuccessful response: " + response.message());
         }
-        return null;
     }
 }
