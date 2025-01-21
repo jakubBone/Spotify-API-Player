@@ -5,7 +5,6 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URI;
 
@@ -27,7 +26,6 @@ public class CallbackServer {
             String code = extractParamValue(query, "code");
             if (code != null) {
                 this.authCode = code;
-                System.out.println("Code: " + code);
             }
         }
     }
@@ -43,16 +41,16 @@ public class CallbackServer {
         return null;
     }
 
-    public void start() {
+    public String getAuthCode() {
+        return authCode;
+    }
+
+    public void startServer(){
         server.start();
     }
 
-    public void stop() {
+    public void stopServer(){
         server.stop(0);
-    }
-
-    public String getAuthCode() {
-        return authCode;
     }
 }
 

@@ -26,10 +26,13 @@ public class SearchService {
             if (response.isSuccessful()) {
                 String responseBody = response.body().string();
                 JsonObject jsonObject = JsonParser.parseString(responseBody).getAsJsonObject();
-                return jsonObject.toString();
+                String albumId = jsonObject.getAsJsonObject("albums")
+                        .getAsJsonArray("items")
+                        .get(0)
+                        .getAsJsonObject()
+                        .get("id").getAsString();
+                return albumId;
             }
-            System.err.println("Error: " + response.code() + " - " + response.message());
-            System.err.println("Response body: " + response.body().string());
             return null;
         } catch (IOException e) {
             throw new RuntimeException(e);

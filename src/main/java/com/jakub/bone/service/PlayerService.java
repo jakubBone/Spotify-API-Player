@@ -1,7 +1,5 @@
 package com.jakub.bone.service;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import okhttp3.*;
 
 import java.io.IOException;
@@ -11,21 +9,20 @@ public class PlayerService {
     public PlayerService(OkHttpClient client) {
         this.client = client;
     }
-
-    public void playMusic(String accessToken, String albumName){
+    public void playMusic(String accessToken, String albumId){
         String url = "https://api.spotify.com/v1/me/player/play";
 
-        String uri = getAlbumUri(albumName);
+        String albumUri = "spotify:album:" + albumId;
 
         RequestBody body = new FormBody.Builder()
-                .add("context_uri", uri)
+                .add("context_uri", albumUri)
                 .build();
 
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("Authorization", "Bearer " + accessToken)
                 .addHeader("Content-Type", "application/json")
-                .post(body)
+                .put(body)
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
@@ -38,15 +35,5 @@ public class PlayerService {
         } catch (IOException ex) {
             throw new RuntimeException("Error during album playing", ex);
         }
-    }
-
-    public String getAlbumUri(String album){
-        JsonObject jsonObject = JsonParser.parseString(album).getAsJsonObject();
-        return jsonObject.getAsJsonObject("albums")
-                .getAsJsonArray("items")
-                .get(0)
-                .getAsJsonObject()
-                .get("uri").getAsString();
-
     }
 }
