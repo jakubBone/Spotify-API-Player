@@ -44,7 +44,6 @@ public class SearchService {
     }
 
     private String parseAlbumId(String responseBody) {
-        // Navigate through the JSON structure to extract the album ID
         // Structure: { "albums": { "items": [ { "id": "album_id", ... }, ... ] }, ... }
         JsonObject jsonObject = JsonParser.parseString(responseBody).getAsJsonObject();
         return jsonObject.getAsJsonObject("albums")
