@@ -1,6 +1,6 @@
 package com.jakub.bone.server;
 
-import com.jakub.bone.utills.Config;
+import com.jakub.bone.exceptions.ParameterNotFoundException;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URI;
+
+import static com.jakub.bone.utills.Config.RESPONSE_FAILED;
+import static com.jakub.bone.utills.Config.RESPONSE_SUCCEED;
 
 public class CallbackServer {
     private HttpContext context;
@@ -31,10 +34,10 @@ public class CallbackServer {
             String code = extractParamValue(query, "code");
             if (code != null) {
                 this.authCode = code;
-                response = Config.RESPONSE_SUCCEED;
+                response = RESPONSE_SUCCEED;
                 statusCode = 200;
             } else {
-                response = Config.RESPONSE_FAILED;
+                response = RESPONSE_FAILED;
                 statusCode = 400;
             }
             exchange.sendResponseHeaders(statusCode, response.length());
@@ -44,15 +47,18 @@ public class CallbackServer {
         }
     }
 
-    private String extractParamValue(String query, String paramName) {
+    private String extractParamValue(String query, String param) {
+        if (query == null || query.isEmpty()) {
+            throw new IllegalArgumentException("Query string is null or empty");
+        }
         String[] pairs = query.split("&");
         for (String pair : pairs) {
             String[] kv = pair.split("=");
-            if (kv.length == 2 && kv[0].equals(paramName)) {
+            if (kv.length == 2 && kv[0].equals(param)) {
                 return kv[1];
             }
         }
-        return null;
+        throw new ParameterNotFoundException("Parameter '" + param + "' not found in query: " + query);
     }
 
     public String getAuthCode() {

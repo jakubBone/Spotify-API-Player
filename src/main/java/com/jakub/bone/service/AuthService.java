@@ -2,7 +2,7 @@ package com.jakub.bone.service;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.jakub.bone.utills.Config;
+import com.jakub.bone.exceptions.AuthenticationException;
 import okhttp3.*;
 
 import java.io.IOException;
@@ -52,8 +52,11 @@ public class AuthService {
                 String responseBody = response.body().string();
                 JsonObject jsonObject = JsonParser.parseString(responseBody).getAsJsonObject();
                 return jsonObject.get("access_token").getAsString();
+            } else {
+                throw new AuthenticationException("Failed to retrieve access token: " + response.message());
             }
-            throw new RuntimeException("Unsuccessful response: " + response.message());
+        } catch (AuthenticationException ex) {
+            throw new AuthenticationException("Error during token retrieval", ex);
         }
     }
 }

@@ -1,5 +1,8 @@
 package com.jakub.bone.core;
 
+import com.jakub.bone.exceptions.AlbumNotFoundException;
+import com.jakub.bone.exceptions.ParameterNotFoundException;
+import com.jakub.bone.exceptions.SpotifyAPIException;
 import com.jakub.bone.server.CallbackServer;
 import com.jakub.bone.service.AuthService;
 import com.jakub.bone.service.SearchService;
@@ -29,16 +32,25 @@ public class SpotifyPlayer {
         this.searchService = new SearchService(client);
     }
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, SpotifyAPIException {
         try {
             new SpotifyPlayer().run();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SpotifyAPIException ex) {
+            System.err.println("Application error: " + ex.getMessage());
+        } catch (URISyntaxException ex) {
+            System.err.println("Invalid URI encountered: " + ex.getMessage());
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+            System.err.println("Application execution was interrupted: " + ex.getMessage());
+        } catch (IOException ex){
+            System.err.println("I/O error occurred: " + ex.getMessage());
+        } finally {
+            System.out.println("Application stopped");
         }
     }
 
-    private void run() throws IOException, InterruptedException, URISyntaxException {
-        String albumName = promptAlbumName();
+    private void run() throws IOException, URISyntaxException, InterruptedException {
+        String album = promptAlbumName();
 
         System.out.println("Login on Spotify website...");
         openUrl(authService.getAuthorizationURL());
@@ -47,9 +59,10 @@ public class SpotifyPlayer {
 
         String token = authService.getAccessToken(authCode);
 
-        String albumId = searchService.searchAlbum(token, albumName);
+        String albumId = searchService.searchAlbum(token, album);
         if (albumId == null) {
-            System.err.println("Album not found");
+            throw new AlbumNotFoundException("Album " + album + "not found");
+
         } else {
             openUrl(ALBUM_URL + albumId);
             System.out.println("Opening album in Spotify Web Player...");
@@ -66,7 +79,7 @@ public class SpotifyPlayer {
     private String waitForAuthCode() throws InterruptedException {
         while (server.getAuthCode() == null) {
             System.out.println("Waiting for user to log in via Spotify...");
-            Thread.sleep(5000);
+            Thread.sleep(1000);
         }
         return server.getAuthCode();
     }
