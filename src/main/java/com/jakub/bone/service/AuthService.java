@@ -18,6 +18,8 @@ public class AuthService {
         this.client = client;
     }
 
+    // Constructs the Spotify authorization URL with necessary query parameters
+    // This URL is used to redirect users to Spotify's authorization page where they can grant permissions
     public String getAuthorizationURL(){
         return AUTH_URL +
                 "?response_type=code" +
@@ -26,6 +28,7 @@ public class AuthService {
                 "&redirect_uri=" + URLEncoder.encode(REDIRECT_URI, StandardCharsets.UTF_8);
     }
 
+    // Exchanges the authorization code received from Spotify for an access token
     public String getAccessToken(String authCode) throws IOException {
         String credentials = CLIENT_ID + ":" + CLIENT_SECRET;
         String encodedCredentials = Base64.getEncoder().encodeToString(credentials.getBytes());

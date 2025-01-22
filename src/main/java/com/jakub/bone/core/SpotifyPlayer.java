@@ -1,12 +1,10 @@
 package com.jakub.bone.core;
 
 import com.jakub.bone.exceptions.AlbumNotFoundException;
-import com.jakub.bone.exceptions.ParameterNotFoundException;
 import com.jakub.bone.exceptions.SpotifyAPIException;
 import com.jakub.bone.server.CallbackServer;
 import com.jakub.bone.service.AuthService;
 import com.jakub.bone.service.SearchService;
-import com.jakub.bone.utills.Config;
 import okhttp3.OkHttpClient;
 
 import java.awt.*;
@@ -16,7 +14,6 @@ import java.net.URISyntaxException;
 import java.util.Scanner;
 
 import static com.jakub.bone.utills.Config.ALBUM_URL;
-
 
 public class SpotifyPlayer {
     private CallbackServer server;
