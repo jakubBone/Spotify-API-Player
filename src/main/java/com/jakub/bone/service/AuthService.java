@@ -10,6 +10,8 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
+import static com.jakub.bone.utills.Config.*;
+
 public class AuthService {
     OkHttpClient client;
     public AuthService(OkHttpClient client) {
@@ -17,28 +19,26 @@ public class AuthService {
     }
 
     public String getAuthorizationURL(){
-        String scopes = "playlist-read-private user-modify-playback-state";
-
-        return Config.AUTH_URL +
+        return AUTH_URL +
                 "?response_type=code" +
-                "&client_id=" + Config.CLIENT_ID +
-                "&scope=" + URLEncoder.encode(scopes, StandardCharsets.UTF_8) +
-                "&redirect_uri=" + URLEncoder.encode(Config.REDIRECT_URI, StandardCharsets.UTF_8);
+                "&client_id=" + CLIENT_ID +
+                "&scope=" + URLEncoder.encode(SCOPES, StandardCharsets.UTF_8) +
+                "&redirect_uri=" + URLEncoder.encode(REDIRECT_URI, StandardCharsets.UTF_8);
     }
 
     public String getAccessToken(String authCode) throws IOException {
-        String credentials = Config.CLIENT_ID + ":" + Config.CLIENT_SECRET;
+        String credentials = CLIENT_ID + ":" + CLIENT_SECRET;
         String encodedCredentials = Base64.getEncoder().encodeToString(credentials.getBytes());
         RequestBody body = new FormBody.Builder()
                 .add("grant_type", "authorization_code")
                 .add("code", authCode)
-                .add("redirect_uri", Config.REDIRECT_URI)
-                .add("client_id", Config.CLIENT_ID)
-                .add("client_secret", Config.CLIENT_SECRET)
+                .add("redirect_uri", REDIRECT_URI)
+                .add("client_id", CLIENT_ID)
+                .add("client_secret", CLIENT_SECRET)
                 .build();
 
         Request request = new Request.Builder()
-                .url(Config.TOKEN_URL)
+                .url(TOKEN_URL)
                 .addHeader("Authorization", "Basic " + encodedCredentials)
                 .post(body)
                 .build();

@@ -4,7 +4,6 @@ import com.jakub.bone.utills.Config;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
-import okhttp3.Response;
 
 import java.io.IOException;
 import java.io.OutputStream;

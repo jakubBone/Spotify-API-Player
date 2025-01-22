@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+import static com.jakub.bone.utills.Config.SEARCH_URL;
+
 
 public class SearchService {
     OkHttpClient client;
@@ -16,7 +18,7 @@ public class SearchService {
     }
 
     public String searchAlbum(String accessToken, String album) {
-        String url = "https://api.spotify.com/v1/search?q=" + URLEncoder.encode(album, StandardCharsets.UTF_8) + "&type=album&limit=1";
+        String url = SEARCH_URL + "?q=" + URLEncoder.encode(album, StandardCharsets.UTF_8) + "&type=album&limit=1";
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("Authorization", "Bearer " + accessToken)
