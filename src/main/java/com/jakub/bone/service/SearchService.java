@@ -20,10 +20,8 @@ public class SearchService {
     }
 
     public String searchAlbum(String accessToken, String album) {
-        // Construct the search URL with query parameters:
+        // Constructs the search URL with query parameters (q, type, limit)
         // q: the album name, URL-encoded to handle special characters
-        // type: specifies that we're searching for an album
-        // limit: restricts the results to the top 1 match
         String url = SEARCH_URL + "?q=" + URLEncoder.encode(album, StandardCharsets.UTF_8) + "&type=album&limit=1";
         Request request = new Request.Builder()
                 .url(url)

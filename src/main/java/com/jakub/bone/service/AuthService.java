@@ -18,8 +18,8 @@ public class AuthService {
         this.client = client;
     }
 
-    // Constructs the Spotify authorization URL with necessary query parameters
-    // This URL is used to redirect users to Spotify's authorization page where they can grant permissions
+    // Constructs the authorization URL with query parameters
+    // This URL is used to redirect users to Spotify's authorization page
     public String getAuthorizationURL(){
         return AUTH_URL +
                 "?response_type=code" +

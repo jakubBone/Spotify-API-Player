@@ -23,7 +23,8 @@ public class CallbackServer {
         this.context = server.createContext("/", this::handleCallback);
     }
 
-    // Handles incoming HTTP requests to the server.
+    // Handles incoming HTTP requests to the server
+    // HttpExchange instance represents a single HTTP request
     private void handleCallback(HttpExchange exchange) throws IOException {
         // Retrieve the URI of the incoming request
         URI requestURI = exchange.getRequestURI();
